@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>Wellness App</h1>
+    <form id="wellnessForm">
+        <label for="emotion">How are you feeling today?</label>
+        <input type="text" id="emotion" name="emotion" required><br><br>
+
+        <label for="steps">How many steps did you take today?</label>
+        <input type="number" id="steps" name="steps" required><br><br>
+
+        <label for="sleep_hours">How many hours did you sleep last night?</label>
+        <input type="number" id="sleep_hours" name="sleep_hours" step="0.1" required><br><br>
+
+        <label for="food_input">What did you eat today?</label>
+        <textarea id="food_input" name="food_input" required></textarea><br><br>
+
+        <button type="submit">Get Wellness Suggestion</button>
+    </form>
+
+    <div id="loading" style="display: none;">Loading...</div>
+
+    <div id="error" style="display: none; color: red;"></div>
+
+    <div id="suggestion" style="display: none;">
+        <h2>Your Wellness Suggestion:</h2>
+        <p id="suggestionText"></p>
+
+        <h3>How helpful was this suggestion?</h3>
+        <select id="feedbackScore">
+            <option value="1">1 - Not helpful at all</option>
+            <option value="2">2 - Slightly helpful</option>
+            <option value="3">3 - Moderately helpful</option>
+            <option value="4">4 - Very helpful</option>
+            <option value="5">5 - Extremely helpful</option>
+        </select>
+        <button onclick="submitFeedback()">Submit Feedback</button>
+    </div>
+
+    <script>
+        document.getElementById('wellnessForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = {
+                emotion: document.getElementById('emotion').value,
+                steps: parseInt(document.getElementById('steps').value),
+                sleep_hours: parseFloat(document.getElementById('sleep_hours').value),
+                food_input: document.getElementById('food_input').value,
+                wearable_data: {
+                    activity_level: 'medium',
+                    sleep_quality: 'good'
+                }
+            };
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('suggestion').style.display = 'none';
+
+            axios.post('/', formData)
+                .then(function (response) {
+                    document.getElementById('suggestionText').innerText = response.data.suggestion;
+                    document.getElementById('suggestion').style.display = 'block';
+                    document.getElementById('wellnessForm').style.display = 'none';
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                    document.getElementById('error').innerText = 'An error occurred. Please try again.';
+                    document.getElementById('error').style.display = 'block';
+                })
+                .finally(function () {
+                    document.getElementById('loading').style.display = 'none';
+                });
+        });
+
+        function submitFeedback() {
+            const feedbackScore = document.getElementById('feedbackScore').value;
+            axios.post('/feedback', { feedback_score: parseInt(feedbackScore) })
+                .then(function (response) {
+                    alert('Thank you for your feedback! New suggestion: ' + response.data.new_suggestion);
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting feedback. Please try again.');
+                });
+        }
+    </script>
+</body>
+</html>
