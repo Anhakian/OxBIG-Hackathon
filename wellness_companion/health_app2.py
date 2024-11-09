@@ -58,7 +58,7 @@ class WellnessApp:
         
         exercise_rec = self.health_guidelines['exercise']['recommendation']
         if user['exercise'] < 30:
-            story += f'''Realizing they had only moved for {user['exercise']} minutes today, Alex recalled the WHO recommendation of {exercise_rec}. They decided to start small by adding a 10-minute walk during their lunch break. As they strolled through a nearby park, Alex noticed the tension in their shoulders melting away and their mood lifting. They made a mental note to try incorporating these short walks more often.
+            story += f'''Realizing they had only moved for {user['exercise']} minutes today, Alex recalled the WHO recommendation of {exercise_rec}. They decided to start small by adding a 10-minute walk during their lunch break. As they strolled through a nearby park, Alex noticed the tension in their shoulders melting away and their mood lifting.
 
 '''
 
@@ -68,7 +68,7 @@ class WellnessApp:
 '''
 
         if user['stress_level'] > 7:
-            story += f'''With their stress level at {user['stress_level']}, Alex knew they needed to take action. They found a quiet spot and practiced deep breathing: inhaling slowly for 4 counts, holding for 4, and exhaling for 6. After repeating this 3 times, Alex felt their heart rate slow and their mind clear. They reminded themselves of past challenges they'd overcome, feeling more confident in their ability to handle the current situation.
+            story += f'''With their stress level at {user['stress_level']}, Alex found a quiet spot and practiced deep breathing: inhaling slowly for 4 counts, holding for 4, and exhaling for 6. After repeating this 3 times, Alex felt their heart rate slow and their mind clear. They reminded themselves of past challenges they'd overcome, feeling more confident in their ability to handle the current situation.
 
 '''
 
@@ -130,7 +130,7 @@ class NutritionAgent:
 
 '''
 
-        story += '''As Alex made these small changes to their diet, they noticed they felt more energized and satisfied throughout the day. They realized that balanced nutrition wasn't about perfection, but about making small, enjoyable improvements over time.'''
+        story += '''As Alex made these small changes to their diet, they noticed they felt more energized and satisfied throughout the day.'''
 
         return story
 
