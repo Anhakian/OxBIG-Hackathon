@@ -5,25 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wellness Companion</title>
     <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
-        h1 { color: #333; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #FDF7ED; }
+        h1 { color: #a26d18; }
         form { max-width: 500px; margin: 0 auto; }
         label { display: block; margin-bottom: 5px; }
         input[type="number"], input[type="text"] { width: 100%; padding: 8px; margin-bottom: 10px; }
-        input[type="submit"] { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        input[type="submit"] { background-color: #F6A623; color: white; padding: 10px 15px; border: none; cursor: pointer; }
         input[type="submit"]:hover { background-color: #45a049; }
     </style>
 </head>
 <body>
     <h1>Wellness Companion</h1>
     <form method="post">
-        <label for="sleep">Sleep hours:</label>
+        <label for="sleep">How many hours did you sleep today?:</label>
         <input type="number" step="0.1" name="sleep" id="sleep" required>
         
-        <label for="exercise">Exercise minutes:</label>
+        <label for="exercise">How many minutes of exercise did you do?:</label>
+        <input type="number" name="exercise" id="exercise" required>
+
+        <label for="steps">How many steps did you take?:</label>
         <input type="number" name="exercise" id="exercise" required>
         
-        <label for="mood">Mood:</label>
+        <label for="mood">What is your mood? (one word):</label>
         <input type="text" name="mood" id="mood" required>
         
         <label for="stress">Stress level (1-10):</label>
