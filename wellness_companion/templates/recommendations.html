@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<!-- <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #FDF7ED}
+    h1 { color: #a26d18;}
+    h2 { color: #a26d18;}
+</style> -->
+<body>
+    <h1>Wellness Recommendations</h1>
+    <h2>General Wellness:</h2>
+    <p>{{ recommendations|safe }}</p>
+    <h2>Nutrition:</h2>
+    <p>{{ nutrition_recs|safe }}</p>
+    <a href="/">Back to Input!</a>
+</body>
+</html>
