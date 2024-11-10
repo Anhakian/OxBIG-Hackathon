@@ -2,9 +2,12 @@ from flask import Flask, request, render_template
 from datetime import datetime
 import requests
 
-def get_health_guidelines():
+### FUNCTIONS ###
 
-    # Replace with your actual API key and external user ID
+def get_health_guidelines():
+    """
+    Function to use OpenDemand's API to get public health guidelines for nutrition, sleep, exercise, and steps."""
+
     api_key = 'OFqVvzQwlLvgeVfbo0cLYbyMUd67NLRk'
     user_id = '123'
 
@@ -39,7 +42,6 @@ def get_health_guidelines():
         "pluginIds": ["plugin-1712327325", "plugin-1713962163"],
         "responseMode": "sync"
     }
-
 
     submit_query_body_exercise = {
         "endpointId": "predefined-openai-gpt4o",
@@ -80,26 +82,6 @@ def get_health_guidelines():
  
     return guidelines, nut_rec.lower(), nut_vals, sleep_rec.lower(), sleep_vals, exercise_rec.lower(), exercise_vals, steps_rec.lower(), steps_vals
 
-    # guidelines = {
-    #     'sleep': {
-    #         'source': 'https://www.cdc.gov/sleep/about_sleep/how_much_sleep.html',
-    #         'recommendation': '7 or more hours per night for adults'
-    #     },
-    #     'exercise': {
-    #         'source': 'https://www.who.int/news-room/fact-sheets/detail/physical-activity',
-    #         'recommendation': 'at least 150 minutes of moderate-intensity aerobic activity throughout the week'
-    #     },
-    #     'nutrition': {
-    #         'source': 'https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf',
-    #         'fruits': 2,  # cups per day
-    #         'vegetables': 2.5,  # cups per day
-    #         'grains': 6,  # ounces per day
-    #         'protein': 5.5,  # ounces per day
-    #         'dairy': 3,  # cups per day
-    #     }
-    # }
-    # return guidelines
-
 class WellnessApp:
     def __init__(self):
         self.user_data = {}
@@ -109,6 +91,7 @@ class WellnessApp:
         self.health_guidelines, self.nut_recs, self.nut_vals, self.sleep_recs, self.sleep_vals, self.exercise_recs, self.exercise_vals, self.step_recs, self.step_vals = get_health_guidelines()
 
     def input_user_data(self, user_id, sleep_hours, exercise_minutes, steps, mood, stress_level):
+        """ Inputs user data from web app window."""
         if user_id not in self.user_data:
             self.user_data[user_id] = {}
         self.user_data[user_id]['sleep'] = sleep_hours
@@ -118,6 +101,7 @@ class WellnessApp:
         self.user_data[user_id]['stress_level'] = stress_level
 
     def generate_recommendations(self, user_id):
+        """ Generates health recommendations based on user data and public health guidelines."""
         user = self.user_data.get(user_id)
         if not user:
             return "User not found"
@@ -153,18 +137,26 @@ class WellnessApp:
         return story
 
     def get_nutrition_recommendation(self, user_id, food_input):
+        """ Function to pull nutrition recommendations from the NutritionAgent class, using OnDemand's KnowYourFood."""
         return self.nutrition_agent.knowyourfood(food_input, self.nut_recs, self.nut_vals)
 
-    def provide_feedback(self, user_id, recommendation, helpful):
-        self.feedback.append({
-            'user_id': user_id,
-            'recommendation': recommendation,
-            'helpful': helpful,
-            'timestamp': datetime.now().isoformat()
-        })
-
 class NutritionAgent:
-    def knowyourfood(self, food_input, guidelines, nut_vals): 
+    def knowyourfood(self, food_input, guidelines): 
+        """ Function to use OpenDemand's API to get nutrition recommendations based on user's food input.
+        Parameters
+        ----------
+        food_input : str
+            Comma-separated string of food items eaten by the user.
+        guidelines : str
+            String of public health guidelines for nutrition.
+
+        Returns
+        -------
+        story : str
+            Story with nutrition recommendations for the user.
+
+        """
+
         api_key = 'CqJ9NYoxyw4kZ9iR7wGg4WpoUbfW9fJs'
         user_id = '123'
 
@@ -183,7 +175,6 @@ class NutritionAgent:
 
         food_items = [f.strip().lower() for f in food_input.split(',')]
 
-        # Join items with proper formatting
         foods = ', '.join(food_items[:-1]) + (', and ' + food_items[-1] if len(food_items) > 1 else '') if food_items else ''
 
         submit_query_url = f'https://api.on-demand.io/chat/v1/sessions/{session_id}/query'
@@ -202,7 +193,6 @@ class NutritionAgent:
         story = f"Alex decided to take a closer look at their diet. Today, they had {foods}.\n\n" \
                 f"Analyzing their meal, Alex remembered the dietary guidelines for adults: {guidelines}. "
 
-    
         nut_tip = query_response_data['data']['answer']
         story += nut_tip    
 
@@ -210,6 +200,7 @@ class NutritionAgent:
 
         return story
 
+#### APP ####
 
 app = Flask(__name__)
 wellness_app = WellnessApp()
@@ -232,48 +223,6 @@ def index():
         return render_template('recommendations.html', recommendations=recommendations, nutrition_recs=nutrition_recs)
     
     return render_template('index.html')
-
-        # return render_template_string('''
-        #     <style>
-        #         body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #FDF7ED}
-        #         h1 { color: #a26d18;}
-        #         h2 { color: #a26d18;}
-        #     </style>
-        #     <h1>Your Wellness Recommendations:</h1>
-        #     <h2>General Wellness:</h2>
-        #     <p>{{ recommendations|safe }}</p>
-        #     <h2>Nutrition:</h2>
-        #     <p>{{ nutrition_recs|safe }}</p>
-        #     <a href="/">Back to Input!</a>
-        # ''', recommendations=recommendations, nutrition_recs=nutrition_recs)
-
-    return render_template_string('''
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Wellness Companion</title>
-            <style>
-                body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #FDF7ED}
-                h1 { color: #a26d18; }
-                form { max-width: 500px; margin: 0 auto; }
-                label { color: #a26d18; display: block; margin-bottom: 5px; }
-                input[type="number"], input[type="text"] { width: 100%; padding: 8px; margin-bottom: 10px; }
-                input[type="submit"] { background-color: #F6A623; color: white; padding: 10px 15px; border: none; cursor: pointer; }
-                input[type="submit"]:hover { background-color: #45a049; }
-            </style>
-        </head>
-        <h1>Hi! Welcome to your Wellness Companion</h1>
-        <form method="post">
-            <label> How many hours did you sleep today?: <input type="number" step="0.1" name="sleep" required></label><br>
-            <label>How many minutes of exercise did you do?: <input type="number" name="exercise" required></label><br>
-            <label>How many steps did you take?: <input type="number" name="steps" required></label><br>
-            <label>What is your mood? (one word): <input type="text" name="mood" required></label><br>
-            <label>Stress level (1-10): <input type="number" min="1" max="10" name="stress" required></label><br>
-            <label>What foood did you eat today (comma-separated): <input type="text" name="food" required></label><br>
-            <input type="submit" value="Get Recommendations">
-        </form>
-    ''')
-
 
 if __name__ == '__main__':
     print("Starting the Wellness App server on port 8081...")
