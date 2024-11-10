@@ -114,7 +114,7 @@ class WellnessApp:
 
         sleep_rec = self.health_guidelines['sleep']
         if user['sleep'] < 7:
-            story += f'''Alex noticed that getting only {user['sleep']} hours of sleep left them feeling a bit groggy. They remembered that the CDC recommends {sleep_rec['data']['answer']}. Alex decided to try something new: setting a gentle reminder an hour before bedtime to start winding down. They dimmed the lights, put away their phone, and did some light stretching. The next morning, Alex woke up feeling more refreshed and ready to tackle the day.
+            story += f'''Alex noticed that getting only {user['sleep']} hours of sleep left them feeling a bit groggy. They remembered that the CDC recommends {sleep_rec['data']['answer'][0]}. Alex decided to try something new: setting a gentle reminder an hour before bedtime to start winding down. They dimmed the lights, put away their phone, and did some light stretching. The next morning, Alex woke up feeling more refreshed and ready to tackle the day.
 
 '''
         
@@ -192,7 +192,7 @@ class NutritionAgent:
         query_response_data = response.json()
 
         story = f"Alex decided to take a closer look at their diet. Today, they had {foods}.\n\n" \
-                f"Analyzing their meal, Alex remembered the dietary guidelines for adults: {guidelines['data']['answer']}."
+                f"Analyzing their meal, Alex remembered the dietary guidelines for adults: {guidelines['data']['answer'][0]}."
 
     
         nut_tip = query_response_data['data']['answer']
@@ -232,7 +232,7 @@ def index():
             <p>{{ recommendations|safe }}</p>
             <h2>Nutrition:</h2>
             <p>{{ nutrition_recs|safe }}</p>
-            <a href="/">Back to Input</a>
+            <a href="/">Back to Input!</a>
         ''', recommendations=recommendations, nutrition_recs=nutrition_recs)
 
     return render_template_string('''
