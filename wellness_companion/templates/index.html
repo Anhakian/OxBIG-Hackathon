@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellness Companion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #FDF7ED}
+        h1 { color: #a26d18; }
+        form { max-width: 500px; margin: 0 auto; }
+        label { color: #a26d18; display: block; margin-bottom: 5px; }
+        input[type="number"], input[type="text"] { width: 100%; padding: 8px; margin-bottom: 10px; }
+        input[type="submit"] { background-color: #F6A623; color: white; padding: 10px 15px; border: none; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #45a049; }
+    </style> -->
+</head>
+<h1>Hi! Welcome to your Wellness Companion</h1>
+<form method="post">
+    <label> How many hours did you sleep today?: <input type="number" step="0.1" name="sleep" required></label><br>
+    <label>How many minutes of exercise did you do?: <input type="number" name="exercise" required></label><br>
+    <label>How many steps did you take?: <input type="number" name="steps" required></label><br>
+    <label>What is your mood? (one word): <input type="text" name="mood" required></label><br>
+    <label>Stress level (1-10): <input type="number" min="1" max="10" name="stress" required></label><br>
+    <label>What food did you eat today (comma-separated): <input type="text" name="food" required></label><br>
+    <input type="submit" value="Get Recommendations">
+</form>
+</html>
