@@ -11,32 +11,25 @@ const HomePage = () => {
     return (
         <div>
             <NavigationBar />
-            <div id='intro' style={{ height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div id='intro' style={{ height: '90vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FDF7ED' }}>
                 <Box sx={{ textAlign: 'center', maxWidth: '600px', margin: 'auto' }}>
-                <div>
+                <div style={{ color: '#F6A623', }}>
                     <Typography className="welcome-title" variant="h3" component="h1" gutterBottom>
-                        WellTale
+                        Rewrite your health
                     </Typography>
                     <Typography variant="h5" component="h2" gutterBottom>
-                    A Journey Through Your Mind
+                        One at a time
                     </Typography>
                 </div>
                 <Button
                     className="button-white"
                     variant="contained"
                     color="primary"
-                    sx={{ mt: 2, mr: 2, backgroundColor: 'white', color: 'black', fontWeight: 600, borderRadius: '10px', padding: '5px 15px', marginLeft: '10px', '&:hover': { backgroundColor: '#e2e2e2' } }}
+                    sx={{ mt: 2, mr: 2, backgroundColor: '#F6A623', color: 'white', fontWeight: 600, borderRadius: '10px', padding: '5px 15px', marginLeft: '10px', '&:hover': { backgroundColor: '#e2e2e2' } }}
                     onClick={handleGetStartedClick}
+                    href="/chat/mood"
                 >
                     Get Started
-                </Button>
-                <Button
-                    className="button-blue"
-                    variant="outlined"
-                    color="primary"
-                    sx={{ mt: 2, backgroundColor: '#2E46CD', color: 'white', fontWeight: 600, borderRadius: '10px', padding: '5px 15px', marginLeft: '10px', '&:hover': { backgroundColor: '#1565C0' } }}
-                >
-                    Learn More
                 </Button>
                 </Box>
             </div>
