@@ -29,6 +29,7 @@ const MoodChat = () => {
             })
         });
         const data = await response.json();
+        console.log(data.data.id);
         return data.data.id;
     };
 
@@ -43,12 +44,21 @@ const MoodChat = () => {
             body: JSON.stringify({
                 endpointId: 'predefined-openai-gpt4o',
                 query: query,
-                pluginIds: ['plugin-1712327325', 'plugin-1713962163', 'plugin-1731189984'],
+                pluginIds: ['plugin-1731189984', 'plugin-1730095028'],
                 responseMode: 'sync'
             })
         });
         const data = await response.json();
-        return data;
+        let content = data.data.answer;
+        let imageUrl = null;
+
+        const imageLinkMatch = content.match(/\[View Image\]\((https?:\/\/[^\s]+)\)/);
+        if (imageLinkMatch) {
+            imageUrl = imageLinkMatch[1];
+            content = content.replace(imageLinkMatch[0], '').trim(); // Remove the image link text
+        }
+
+        return { answer: content, imageUrl };
     };
 
     // Initialize chat session
@@ -74,10 +84,12 @@ const MoodChat = () => {
         
         try {
             const response = await submitQuery(sessionId, message);
+            
+            console.log(response)
             // Add AI response
             setMessages(prev => [...prev, { 
                 role: 'assistant', 
-                content: response.data.answer 
+                content: response.answer
             }]);
         } catch (error) {
             console.error('Error submitting query:', error);

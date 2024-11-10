@@ -71,6 +71,11 @@ const ChatInterface = ({
                                     }}
                                 >
                                     {message.content}
+                                    {message.imageUrl && (
+                                        <Box mt={2}>
+                                            <img src={message.imageUrl} alt="Generated content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+                                        </Box>
+                                    )}
                                 </Box>
                             </Box>
                         ))}
